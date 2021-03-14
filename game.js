@@ -1,7 +1,13 @@
 let hero;
+let enemies;
+let canvas;
+let num_enemies = 3;
 
 function setup() {
-  hero = new Player(320, 455, 33, 25, new Canvas(640, 480));
+  canvas = new Canvas(640, 480);
+  hero = new Player(320, 455, 33, 25, canvas);
+
+  enemies = new Enemy(canvas, num_enemies);
 }
 
 function controls() {
@@ -19,9 +25,7 @@ function controls() {
 function draw() {
   background(0);
 
-  fill(color(255,0,0));
-  square(320, 10, 25);
-
+  enemies.update();
   controls();
   hero.show();
 }
