@@ -1,9 +1,7 @@
 let hero;
 
 function setup() {
-  createCanvas(640, 480);
-  plane = new Plane(640, 480);
-  hero = new Player(320, 455, 33, 25, plane);
+  hero = new Player(320, 455, 33, 25, new Canvas(640, 480));
 }
 
 function controls() {
