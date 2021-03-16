@@ -41,7 +41,7 @@ class Cameracontrol {
       });
   }
 
-  show() {
+  update() {
     image(this.flippedVideo, 0, 0);
   }
 

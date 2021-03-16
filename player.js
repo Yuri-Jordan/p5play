@@ -5,6 +5,7 @@ class Player {
     this.len1 = len1;
     this.len2 = len2;
     this.canvas = canvas;
+    this.bulletImage = loadImage('assets/asteroids_bullet.png');
   }
 
   updateDir(x, y) {
@@ -26,5 +27,9 @@ class Player {
   show() {
     fill(color(0, 150, 125));
     ellipse(this.xdir, this.ydir, this.len1, this.len2);
+  }
+
+  shoot() {
+    new Tiro(this.xdir, this.ydir, this.bulletImage);
   }
 }
