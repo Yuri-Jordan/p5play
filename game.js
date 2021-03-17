@@ -10,7 +10,7 @@ let level = 1;
 
 function setup() {
   canvas = new Canvas(640, 480);
-  hero = new Player(320, 455, 33, 25, canvas);
+  hero = new Player(320, 455, canvas);
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
 
@@ -19,28 +19,39 @@ function setup() {
 
 function controls() {
   if (keyIsDown(LEFT_ARROW)) {
-    hero.updateDir(-1, 0);
+    hero.updateDir(true);
   } else if (keyIsDown(RIGHT_ARROW)) {
-    hero.updateDir(1, 0);
-  } else if (keyIsDown(DOWN_ARROW)) {
-    hero.updateDir(0, 1);
-  } else if (keyIsDown(UP_ARROW)) {
-    hero.updateDir(0, -1);
+    hero.updateDir(false);
   } else if(keyWentDown('x')){
     hero.shoot();
+  } else {
+    hero.stopMoving();
   }
+
   drawSprites();
 }
 
 
 function draw() {
   background(0);
+  enemies.enemiesGroup.overlap(hero.bullets, hit);
+  enemies.bulletsGroup.overlap(hero.hero, damage);
   
   enemies.update();
   controls();
-  hero.show();
   // cameracontrol.update();
   updateGUI();
+}
+
+function hit(enemy, bullet){
+  bullet.remove();
+  enemy.remove();
+  pontos +=1
+}
+
+function damage(bullet){
+  bullet.remove();
+  life -=1
 }
 
 function updateGUI(){

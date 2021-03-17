@@ -1,35 +1,61 @@
 class Player {
-  constructor(x,y,len1,len2,canvas) {
+  constructor(x, y, canvas) {
     this.xdir = x;
     this.ydir = y;
-    this.len1 = len1;
-    this.len2 = len2;
     this.canvas = canvas;
     this.bulletImage = loadImage('assets/asteroids_bullet.png');
+    this.bullets = new Group();
+
+    this.createShip();
   }
 
-  updateDir(x, y) {
-    if(this.xdir > 0 && this.xdir < this.canvas.x){
-      this.xdir = this.xdir + x;
-    } else {
-      if(this.xdir == this.canvas.x) this.xdir = this.canvas.x - 1;
-      else if(this.xdir == 0) this.xdir = 1;
-    }
-
-    if(this.ydir > 0 && this.ydir < this.canvas.y){
-      this.ydir = this.ydir + y;
-    } else {
-      if(this.ydir == this.canvas.y) this.ydir = this.canvas.y - 1;
-      else if(this.ydir == 0) this.ydir = 1;
-    }
+  outsideLateralBounds() {
+    if (!this.hero) return false;
+    return this.hero.position.x >= canvas.x || this.hero.position.x <= 0;
   }
 
-  show() {
-    fill(color(0, 150, 125));
-    ellipse(this.xdir, this.ydir, this.len1, this.len2);
+  updateDir(toLeft) {
+    this.moove();
+    (toLeft) ? this.toLeft() : this.toRight();
+  }
+
+  toRight() {
+    if (this.hero.position.x >= canvas.x) {
+      return;
+    }
+    this.hero.position.x = this.hero.position.x + 3;
+  }
+
+  toLeft() {
+    if (this.hero.position.x <= 0) {
+      return;
+    }
+    this.hero.position.x = this.hero.position.x - 3;
+  }
+
+  createShip() {
+    this.heroImage = loadImage('assets/asteroids_ship0001.png');
+
+    this.hero = createSprite(this.xdir, this.ydir);
+    this.hero.maxSpeed = 6;
+    this.hero.friction = 0.98;
+    this.hero.rotation = -90;
+    this.hero.setCollider('circle', 0, 0, 20);
+
+    this.hero.addImage('normal', this.heroImage);
+    this.hero.addAnimation('thrust', 'assets/asteroids_ship0002.png', 'assets/asteroids_ship0007.png');
+  }
+
+  moove() {
+    this.hero.changeAnimation('thrust');
+  }
+
+  stopMoving() {
+    this.hero.changeAnimation('normal');
   }
 
   shoot() {
-    new Tiro(this.xdir, this.ydir, this.bulletImage);
+    const bullet = new Tiro(this.hero.position.x, this.hero.position.y, this.bulletImage);
+    this.bullets.add(bullet.getBullet());
   }
 }
