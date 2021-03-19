@@ -8,24 +8,22 @@ let life = 3;
 let pontos = 0;
 let level = 1;
 
-let backSound;
+let gameSounds;
 
 function setup() {
   canvas = new Canvas(640, 480);
-  hero = new Player(320, 455, canvas);
+  gameSounds = new Sound();
+
+  hero = new Player(320, 455, canvas, gameSounds.getHeroSounds());
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
 
-  enemies = new Enemy(canvas, num_enemies);
-  backSound = new Sound().getBackSound();
-  
+  enemies = new Enemy(canvas, num_enemies, gameSounds.getEnemySounds());
 }
 
 function mousePressed() {
-  if (backSound.isPlaying()) {
-    song.stop();
-  } else {
-    backSound.loop();
+  if (!gameSounds.backSound.isPlaying()) {
+    gameSounds.backSound.loop();
   }
 }
 
@@ -58,6 +56,7 @@ function draw() {
 function hit(enemy, bullet){
   bullet.remove();
   enemy.remove();
+  gameSounds.spaceExplosion.play();
   pontos +=1
 }
 

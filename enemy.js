@@ -1,11 +1,12 @@
 class Enemy {
-  constructor(canvas, num_enemies) {
+  constructor(canvas, num_enemies, enemySounds) {
     this.enemyX = [];
     this.enemyY = [];
     this.canvas = canvas;
     this.num_enemies = num_enemies; 
     this.enemiesGroup;
     this.bulletsGroup;
+    this.enemySounds = enemySounds;
 
     this.createEnemies();
   }
@@ -51,6 +52,7 @@ class Enemy {
 
     const bullet = new Tiro(enemy.position.x, enemy.position.y, this.bulletImage, true);
     this.bulletsGroup.add(bullet.getBullet());
+    this.enemySounds.shoot.play();
   }
 
   outsideLateralBounds(enemy) {

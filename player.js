@@ -1,10 +1,11 @@
 class Player {
-  constructor(x, y, canvas) {
+  constructor(x, y, canvas, heroSounds) {
     this.xdir = x;
     this.ydir = y;
     this.canvas = canvas;
     this.bulletImage = loadImage('assets/asteroids_bullet.png');
     this.bullets = new Group();
+    this.heroSounds = heroSounds;
 
     this.createShip();
   }
@@ -57,5 +58,6 @@ class Player {
   shoot() {
     const bullet = new Tiro(this.hero.position.x, this.hero.position.y, this.bulletImage);
     this.bullets.add(bullet.getBullet());
+    this.heroSounds.shoot.play();
   }
 }
