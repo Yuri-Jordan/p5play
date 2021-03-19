@@ -8,6 +8,8 @@ let life = 3;
 let pontos = 0;
 let level = 1;
 
+let backSound;
+
 function setup() {
   canvas = new Canvas(640, 480);
   hero = new Player(320, 455, canvas);
@@ -15,6 +17,16 @@ function setup() {
   // cameracontrol.createCamera();
 
   enemies = new Enemy(canvas, num_enemies);
+  backSound = new Sound().getBackSound();
+  
+}
+
+function mousePressed() {
+  if (backSound.isPlaying()) {
+    song.stop();
+  } else {
+    backSound.loop();
+  }
 }
 
 function controls() {
