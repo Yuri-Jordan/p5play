@@ -10,19 +10,22 @@ let level = 1;
 
 let gameSounds;
 var gameScreens = {
-  MAIN : 0, 
+  MAIN: 0,
   GAME: 1,
+  GAMEOVER: 2,
 };
 
 let currentScreenID;
-let currentScreen;
+let mainScreen;
+let gameOverScreen;
 
 function setup() {
-  
+
   canvas = new Canvas(640, 480);
 
   currentScreenID = gameScreens.MAIN;
-  currentScreen = new ScreenMain(canvas, gameScreens);
+  mainScreen = new ScreenMain(canvas, gameScreens);
+  gameOverScreen = new ScreenGameOver(canvas, gameScreens);
 
   gameSounds = new Sound();
 
@@ -45,7 +48,7 @@ function controls() {
     hero.updateDir(true);
   } else if (keyIsDown(RIGHT_ARROW)) {
     hero.updateDir(false);
-  } else if(keyWentDown('x')){
+  } else if (keyWentDown('x')) {
     hero.shoot();
   } else {
     hero.stopMoving();
@@ -57,14 +60,17 @@ function controls() {
 
 function draw() {
 
-  if(currentScreenID == gameScreens.MAIN) {
-    currentScreen.draw();
-    currentScreenID = currentScreen.getScreenID();
+  if (currentScreenID == gameScreens.MAIN) {
+    mainScreen.draw();
+    currentScreenID = mainScreen.getScreenID();
+    return;
+  } else if (currentScreenID == gameScreens.GAMEOVER) {
+    gameOverScreen.draw();
     return;
   }
 
   background(0);
-  
+
   enemies.update();
   controls();
   // cameracontrol.update();
@@ -73,24 +79,25 @@ function draw() {
   enemies.bulletsGroup.overlap(hero.hero, damage);
 }
 
-function hit(enemy, bullet){
+function hit(enemy, bullet) {
   bullet.remove();
   enemy.remove();
   gameSounds.spaceExplosion.play();
-  pontos +=1;
+  pontos += 1;
 }
 
-function damage(bullet){
+function damage(bullet) {
   bullet.remove();
-  life -=1;
-  pontos -=1;
+  life -= 1;
+  pontos -= 1;
+  if (life == 0) currentScreenID = gameScreens.GAMEOVER;
 }
 
-function updateGUI(){
-  fill(255,255,255)
+function updateGUI() {
+  fill(255, 255, 255)
   text('VIDAS: ' + life, canvas.x - 80, canvas.y - 50)
-  fill(255,255,255)
+  fill(255, 255, 255)
   text('PONTOS: ' + pontos, canvas.x - 80, canvas.y - 30)
-  fill(255,255,255)
+  fill(255, 255, 255)
   text('NÍVEL: ' + level, canvas.x - 80, canvas.y - 10)
 }
