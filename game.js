@@ -13,19 +13,25 @@ var gameScreens = {
   MAIN: 0,
   GAME: 1,
   GAMEOVER: 2,
+  GAMEWIN: 3,
 };
 
 let currentScreenID;
 let mainScreen;
 let gameOverScreen;
+let gameWinScreen;
+
+let backImage;
 
 function setup() {
 
   canvas = new Canvas(640, 480);
-
+  backImage = loadImage('assets/images/background/backgroundSpace.png');
   currentScreenID = gameScreens.MAIN;
+
   mainScreen = new ScreenMain(canvas, gameScreens);
   gameOverScreen = new ScreenGameOver(canvas, gameScreens);
+  gameWinScreen = new WinScreen(canvas, gameScreens);
 
   gameSounds = new Sound();
 
@@ -67,9 +73,12 @@ function draw() {
   } else if (currentScreenID == gameScreens.GAMEOVER) {
     gameOverScreen.draw();
     return;
+  } else if (currentScreenID == gameScreens.GAMEWIN) {
+    gameWinScreen.draw();
+    return;
   }
 
-  background(0);
+  background(backImage);
 
   enemies.update();
   controls();
@@ -84,6 +93,8 @@ function hit(enemy, bullet) {
   enemy.remove();
   gameSounds.spaceExplosion.play();
   pontos += 1;
+  
+  if (enemies.enemiesGroup.length == 0) currentScreenID = gameScreens.GAMEWIN;
 }
 
 function damage(bullet) {
