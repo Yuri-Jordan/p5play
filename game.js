@@ -4,14 +4,26 @@ let canvas;
 let cameracontrol;
 let num_enemies = 3;
 
-let life = 3;
+let life = 5;
 let pontos = 0;
 let level = 1;
 
 let gameSounds;
+var gameScreens = {
+  MAIN : 0, 
+  GAME: 1,
+};
+
+let currentScreenID;
+let currentScreen;
 
 function setup() {
+  
   canvas = new Canvas(640, 480);
+
+  currentScreenID = gameScreens.MAIN;
+  currentScreen = new ScreenMain(canvas, gameScreens);
+
   gameSounds = new Sound();
 
   hero = new Player(320, 455, canvas, gameSounds.getHeroSounds());
@@ -44,6 +56,13 @@ function controls() {
 
 
 function draw() {
+
+  if(currentScreenID == gameScreens.MAIN) {
+    currentScreen.draw();
+    currentScreenID = currentScreen.getScreenID();
+    return;
+  }
+
   background(0);
   
   enemies.update();
@@ -58,12 +77,13 @@ function hit(enemy, bullet){
   bullet.remove();
   enemy.remove();
   gameSounds.spaceExplosion.play();
-  pontos +=1
+  pontos +=1;
 }
 
 function damage(bullet){
   bullet.remove();
-  life -=1
+  life -=1;
+  pontos -=1;
 }
 
 function updateGUI(){

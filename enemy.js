@@ -7,6 +7,7 @@ class Enemy {
     this.enemiesGroup;
     this.bulletsGroup;
     this.enemySounds = enemySounds;
+    this.firstCall = true;
 
     this.createEnemies();
   }
@@ -22,7 +23,9 @@ class Enemy {
     this.bulletsGroup = new Group();
     this.enemyImage = loadImage('assets/square.png');
     this.bulletImage = loadImage('assets/asteroids_bullet.png');
+  }
 
+  drawEnemies() {
     for(let i = 0; i < this.num_enemies; i = i + 1){
 
       const enemy = createSprite(this.enemyX[i], this.enemyY[i]);
@@ -34,6 +37,12 @@ class Enemy {
   }
 
   update(){
+
+    if(this.firstCall) {
+      this.drawEnemies();
+      this.firstCall = false;
+    }
+
     for(let i = 0; i < this.num_enemies; i = i + 1){
       const currentEnemy = this.enemiesGroup[i];
       if(this.outsideLateralBounds(currentEnemy)) {
