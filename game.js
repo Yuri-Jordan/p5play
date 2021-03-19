@@ -15,8 +15,9 @@ function setup() {
   gameSounds = new Sound();
 
   hero = new Player(320, 455, canvas, gameSounds.getHeroSounds());
-  cameracontrol = new Cameracontrol(hero);
-  cameracontrol.createCamera();
+
+  // cameracontrol = new Cameracontrol(hero);
+  // cameracontrol.createCamera();
 
   enemies = new Enemy(canvas, num_enemies, gameSounds.getEnemySounds());
 }
@@ -27,27 +28,27 @@ function mousePressed() {
   }
 }
 
-// function controls() {
-//   if (keyIsDown(LEFT_ARROW)) {
-//     hero.updateDir(true);
-//   } else if (keyIsDown(RIGHT_ARROW)) {
-//     hero.updateDir(false);
-//   } else if(keyWentDown('x')){
-//     hero.shoot();
-//   } else {
-//     hero.stopMoving();
-//   }
+function controls() {
+  if (keyIsDown(LEFT_ARROW)) {
+    hero.updateDir(true);
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    hero.updateDir(false);
+  } else if(keyWentDown('x')){
+    hero.shoot();
+  } else {
+    hero.stopMoving();
+  }
 
-//   drawSprites();
-// }
+  drawSprites();
+}
 
 
 function draw() {
   background(0);
   
   enemies.update();
-  // controls();
-  cameracontrol.update();
+  controls();
+  // cameracontrol.update();
   updateGUI();
   enemies.enemiesGroup.overlap(hero.bullets, hit);
   enemies.bulletsGroup.overlap(hero.hero, damage);
