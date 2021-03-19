@@ -43,30 +43,30 @@ class Cameracontrol {
 
   update() {
     image(this.flippedVideo, 0, 0);
+    this.classificationPromisse();
   }
 
   controlsSpace() {
     if (this.label === 'left') {
-      this.hero.updateDir(-1, 0);
+      this.hero.updateDir(true);
     } else if (this.label === 'right') {
-      this.hero.updateDir(1, 0);
-    } else if (this.label === 'down') {
-      this.hero.updateDir(0, 1);
+      this.hero.updateDir();
     } else if (this.label === 'up') {
-      this.hero.updateDir(0, -1);
+      this.hero.shoot();
+    } else {
+      this.hero.stopMoving();
     }
+
+    drawSprites();
   }
 
   handleMoviment(results) {
-    console.log('results :>> ', results);
     if (!results) {
       return;
     }
 
     // The results are in an array ordered by confidence.
     this.label = (results) ? results[0].label : '';
-    console.log('this.label :>> ', this.label);
     this.controlsSpace();
-    this.classificationPromisse();
   }
 }
