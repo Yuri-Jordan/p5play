@@ -6,10 +6,15 @@ class Sound {
     this.spaceExplosion = loadSound('assets/sounds/space-explosion.flac');
     this.powerUpLife = loadSound('assets/sounds/powerup-life.wav');
     this.hitSound = loadSound('assets/sounds/hit_sound.wav');
+    this.gameOverSound = loadSound('assets/sounds/gameover.ogg');
   }
 
   getHeroSounds() {
     return { shoot: this.heroShootSound };
+  }
+
+  getGameOverSound() {
+    return this.gameOverSound;
   }
 
   getEnemySounds() {

@@ -39,7 +39,6 @@ class Player {
     this.hero = createSprite(this.xdir, this.ydir);
     this.hero.maxSpeed = 6;
     this.hero.friction = 0.98;
-    // this.hero.rotation = -90;
     this.hero.scale = 0.2;
     this.hero.setCollider('circle', 0, 0, 20);
 

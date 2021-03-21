@@ -104,7 +104,11 @@ function damage(bullet) {
   bullet.remove();
   life -= 1;
   pontos -= 1;
-  if (life == 0) currentScreenID = gameScreens.GAMEOVER;
+  if (life == 0){
+    gameSounds.backSound.stop();
+    gameSounds.getGameOverSound().play();
+    currentScreenID = gameScreens.GAMEOVER;
+  } 
 }
 
 function health(lifeCatch) {
