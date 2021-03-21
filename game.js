@@ -1,8 +1,10 @@
 let hero;
 let enemies;
 let canvas;
+let lifeObject;
 let cameracontrol;
 let num_enemies = 3;
+const ESPACE_KEY_CODE = 32;
 
 let life = 5;
 let pontos = 0;
@@ -36,11 +38,10 @@ function setup() {
   gameSounds = new Sound();
 
   hero = new Player(320, 435, canvas, gameSounds.getHeroSounds());
-
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
-
   enemies = new Enemy(canvas, num_enemies, gameSounds.getEnemySounds());
+  lifeObject = new Life(canvas);
 }
 
 function mousePressed() {
@@ -54,7 +55,7 @@ function controls() {
     hero.updateDir(true);
   } else if (keyIsDown(RIGHT_ARROW)) {
     hero.updateDir(false);
-  } else if (keyWentDown('x')) {
+  } else if (keyWentDown(ESPACE_KEY_CODE)) {
     hero.shoot();
   }
 
@@ -79,11 +80,13 @@ function draw() {
   background(backImage);
 
   enemies.update();
+  lifeObject.update();
   controls();
   // cameracontrol.update();
   updateGUI();
   enemies.enemiesGroup.overlap(hero.bullets, hit);
   enemies.bulletsGroup.overlap(hero.hero, damage);
+  lifeObject.lifesGroup.overlap(hero.hero, health);
 }
 
 function hit(enemy, bullet) {
@@ -96,10 +99,17 @@ function hit(enemy, bullet) {
 }
 
 function damage(bullet) {
+  gameSounds.getHitSound().play();
   bullet.remove();
   life -= 1;
   pontos -= 1;
   if (life == 0) currentScreenID = gameScreens.GAMEOVER;
+}
+
+function health(lifeCatch) {
+  gameSounds.getPowerUpSounds().life.play();
+  lifeCatch.remove();
+  life += 1;
 }
 
 function updateGUI() {
