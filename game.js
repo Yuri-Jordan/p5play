@@ -100,6 +100,7 @@ function hit(enemy, bullet) {
 
 function damage(bullet) {
   gameSounds.getHitSound().play();
+  hero.heroDamagedAnimation();
   bullet.remove();
   life -= 1;
   pontos -= 1;

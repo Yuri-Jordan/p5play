@@ -51,4 +51,23 @@ class Player {
     this.bullets.add(bullet.getBullet());
     this.heroSounds.shoot.play();
   }
+
+  heroDamagedAnimation() {
+    setTimeout(() => {
+    
+      this.hero.position.y += 15;
+    }, 1);
+    setTimeout(() => {
+      
+      this.hero.position.y -= 15;
+    }, 100);
+    setTimeout(() => {
+      
+      this.hero.position.y -= 15;
+    }, 100);
+    setTimeout(() => {
+      
+      this.hero.position.y += 15;
+    }, 100);
+  }
 }
