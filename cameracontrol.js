@@ -53,8 +53,6 @@ class Cameracontrol {
       this.hero.updateDir();
     } else if (this.label === 'up') {
       this.hero.shoot();
-    } else {
-      this.hero.stopMoving();
     }
 
     drawSprites();

@@ -3,7 +3,7 @@ class Player {
     this.xdir = x;
     this.ydir = y;
     this.canvas = canvas;
-    this.bulletImage = loadImage('assets/asteroids_bullet.png');
+    this.bulletImage = loadImage('assets/images/ChargeShotGreen.png');
     this.bullets = new Group();
     this.heroSounds = heroSounds;
 
@@ -16,7 +16,6 @@ class Player {
   }
 
   updateDir(toLeft) {
-    this.moove();
     (toLeft) ? this.toLeft() : this.toRight();
   }
 
@@ -35,24 +34,16 @@ class Player {
   }
 
   createShip() {
-    this.heroImage = loadImage('assets/asteroids_ship0001.png');
+    this.heroImage = loadImage('assets/images/ship5.png');
 
     this.hero = createSprite(this.xdir, this.ydir);
     this.hero.maxSpeed = 6;
     this.hero.friction = 0.98;
-    this.hero.rotation = -90;
+    // this.hero.rotation = -90;
+    this.hero.scale = 0.2;
     this.hero.setCollider('circle', 0, 0, 20);
 
-    this.hero.addImage('normal', this.heroImage);
-    this.hero.addAnimation('thrust', 'assets/asteroids_ship0002.png', 'assets/asteroids_ship0007.png');
-  }
-
-  moove() {
-    this.hero.changeAnimation('thrust');
-  }
-
-  stopMoving() {
-    this.hero.changeAnimation('normal');
+    this.hero.addImage(this.heroImage);
   }
 
   shoot() {

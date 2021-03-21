@@ -35,7 +35,7 @@ function setup() {
 
   gameSounds = new Sound();
 
-  hero = new Player(320, 455, canvas, gameSounds.getHeroSounds());
+  hero = new Player(320, 435, canvas, gameSounds.getHeroSounds());
 
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
@@ -56,8 +56,6 @@ function controls() {
     hero.updateDir(false);
   } else if (keyWentDown('x')) {
     hero.shoot();
-  } else {
-    hero.stopMoving();
   }
 
   drawSprites();

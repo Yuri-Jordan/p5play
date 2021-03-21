@@ -6,6 +6,8 @@ class Tiro {
 
     this.bullet = createSprite(heroX, heroY);
     this.bullet.addImage(this.bulletImage);
+    this.bullet.scale = 0.06;
+    this.bullet.rotation = (enemyShooted) ? this.DOWN_DIRECTION : this.UP_DIRECTION;
     this.bullet.setSpeed((enemyShooted) ? 3 : 10, (enemyShooted) ? this.DOWN_DIRECTION : this.UP_DIRECTION);
     this.bullet.life = 220;
   }

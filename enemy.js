@@ -21,14 +21,16 @@ class Enemy {
 
     this.enemiesGroup = new Group();
     this.bulletsGroup = new Group();
-    this.enemyImage = loadImage('assets/square.png');
-    this.bulletImage = loadImage('assets/asteroids_bullet.png');
+    this.enemyImage = loadImage('assets/images/enemies/enemyshipred.png');
+    this.bulletImage = loadImage('assets/images/ChargeShotRedOrange.png');
   }
 
   drawEnemies() {
     for(let i = 0; i < this.num_enemies; i = i + 1){
 
       const enemy = createSprite(this.enemyX[i], this.enemyY[i]);
+      enemy.scale = 0.5;
+      enemy.rotation = 180;
       enemy.addImage(this.enemyImage);
       enemy.velocity.x = 5;
 
