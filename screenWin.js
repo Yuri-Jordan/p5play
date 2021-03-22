@@ -6,13 +6,14 @@ class WinScreen {
         this.fontsize = 60;
     }
 
-    draw() {
+    draw(score) {
         background(this.backImage);
 
         textSize(this.fontsize);
         textAlign(CENTER);
         fill(255, 255, 255);
         text('NOME JOGO', this.canvas.x / 2, this.canvas.y / 4);
-        text('Você venceu!!!', this.canvas.x / 2, this.canvas.y / 1.5);
+        this.fontsize = 30;
+        text('Você venceu! Sua ponuação foi ' + int(score), this.canvas.x / 2, this.canvas.y / 1.5);
     }
 }

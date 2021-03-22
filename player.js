@@ -3,7 +3,7 @@ class Player {
     this.xdir = x;
     this.ydir = y;
     this.canvas = canvas;
-    this.bulletImage = loadImage('assets/images/ChargeShotGreen.png');
+    this.bulletImage = loadImage('assets/images/bullets/ChargeShotGreen.png');
     this.bullets = new Group();
     this.heroSounds = heroSounds;
 

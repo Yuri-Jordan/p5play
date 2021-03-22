@@ -5,6 +5,7 @@ let lifeObject;
 let cameracontrol;
 const ESPACE_KEY_CODE = 32;
 let levelChanged = true;
+let lifeBoss = 10;
 
 let gameSounds;
 var gameScreens = {
@@ -87,7 +88,7 @@ function draw() {
     gameOverScreen.draw();
     return;
   } else if (currentScreenID == gameScreens.GAMEWIN) {
-    gameWinScreen.draw();
+    gameWinScreen.draw(pontos);
     return;
   } else if (currentScreenID == gameScreens.GAMESECONDLEVEL) {
     gameSecondLevelScreen.draw();
@@ -122,20 +123,29 @@ function draw() {
 
 function hit(enemy, bullet) {
   bullet.remove();
-  enemy.remove();
+
+  if (level != gameLevels.FINAL) {
+    enemy.remove();
+  } else {
+    lifeBoss -= 1;
+    if (lifeBoss == 0) {
+      gameSounds.backSound.stop();
+      enemy.remove();
+    }
+  }
   gameSounds.spaceExplosion.play();
   pontos += 1;
 
   if (enemies.enemiesGroup.length == 0) {
-    gameSounds.backSound.stop();
 
     if (currentScreenID == gameScreens.GAME) {
       currentScreenID = gameScreens.GAMESECONDLEVEL;
     } else if (currentScreenID == gameScreens.GAMESECONDLEVEL) {
       levelChanged = true;
       currentScreenID = gameScreens.GAMEFINALLEVEL;
+    } else if (currentScreenID == gameScreens.GAMEFINALLEVEL) {
+      currentScreenID = gameScreens.GAMEWIN;
     }
-
   }
 }
 

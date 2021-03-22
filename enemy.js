@@ -9,20 +9,25 @@ class Enemy {
     this.bulletsGroup;
     this.enemySounds = enemySounds;
     this.firstCall = true;
+    this.shootLevel = float('0.0' + this.level);
 
     this.enemyImages = {
-      '1': 'assets/images/enemies/enemyshipred.png',
-      '2': 'assets/images/enemies/enemyshipblue.png',
-      '3': 'assets/images/enemies/enemyshipgreen.png',
+      '1': 'assets/images/enemies/enemyship001.png',
+      '2': 'assets/images/enemies/enemyship002.png',
+      '3': 'assets/images/enemies/enemyship003.png',
     };
 
     this.bulletImages = {
-      '1': 'assets/images/ChargeShotRedOrange.png',
-      '2': 'assets/images/ChargeShotBlue.png',
-      '3': 'assets/images/ChargeShotGreen.png',
+      '1': 'assets/images/bullets/ChargeShotRedOrange.png',
+      '2': 'assets/images/bullets/ChargeShotBlue.png',
+      '3': 'assets/images/bullets/ChargeShotPurple.png',
     };
 
     this.createEnemies();
+  }
+
+  finalLevel() {
+    return this.level == 3;
   }
 
   createEnemies(){
@@ -42,11 +47,17 @@ class Enemy {
     for(let i = 0; i < this.num_enemies; i = i + 1){
 
       const enemy = createSprite(this.enemyX[i], this.enemyY[i]);
-      enemy.scale = 0.5;
+      enemy.scale = (this.finalLevel()) ? 1.1 : 0.5;
       enemy.rotation = 180;
-      enemy.addImage(this.enemyImage);
-      enemy.velocity.x = 5;
+      enemy.addImage('normal', this.enemyImage);
+      enemy.velocity.x = (this.finalLevel()) ? 7 : 5;
       enemy.setCollider("circle", 0, 0, 75);
+
+      if (this.finalLevel()) {
+        enemy.addAnimation('boss', this.enemyImages[1], this.enemyImages[3]);
+        enemy.changeAnimation('boss');
+      } 
+
       this.enemiesGroup.add(enemy);
     }
   }
@@ -70,7 +81,7 @@ class Enemy {
   shoot(enemy) {
     if(!enemy) return;
 
-    var randomBoolean = Math.random() < 0.01;
+    var randomBoolean = Math.random() < this.shootLevel;
 
     if(!randomBoolean) return;
 
