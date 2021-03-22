@@ -51,6 +51,10 @@ class Player {
     this.heroSounds.shoot.play();
   }
 
+  remove() {
+    this.hero.remove();
+  }
+
   heroDamagedAnimation() {
     setTimeout(() => {
     

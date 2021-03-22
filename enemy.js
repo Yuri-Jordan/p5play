@@ -1,28 +1,39 @@
 class Enemy {
-  constructor(canvas, num_enemies, enemySounds) {
+  constructor(canvas, enemySounds, level) {
     this.enemyX = [];
     this.enemyY = [];
     this.canvas = canvas;
-    this.num_enemies = num_enemies; 
+    this.num_enemies = 3 * int(level); 
     this.enemiesGroup;
     this.bulletsGroup;
     this.enemySounds = enemySounds;
     this.firstCall = true;
+    this.level = level;
+
+    this.enemyImages = {
+      '1': 'assets/images/enemies/enemyshipred.png',
+      '2': 'assets/images/enemies/enemyshipblue.png',
+    };
+
+    this.bulletImages = {
+      '1': 'assets/images/ChargeShotRedOrange.png',
+      '2': 'assets/images/ChargeShotBlue.png',
+    };
 
     this.createEnemies();
   }
 
   createEnemies(){
 
-    for(let i = 0; i < num_enemies; i = i + 1){
+    for(let i = 0; i < this.num_enemies; i = i + 1){
       this.enemyX[i] = int(random(640));
       this.enemyY[i] = int(random(200));
     }
 
     this.enemiesGroup = new Group();
     this.bulletsGroup = new Group();
-    this.enemyImage = loadImage('assets/images/enemies/enemyshipred.png');
-    this.bulletImage = loadImage('assets/images/ChargeShotRedOrange.png');
+    this.enemyImage = loadImage(this.enemyImages[this.level]);
+    this.bulletImage = loadImage(this.bulletImages[this.level]);
   }
 
   drawEnemies() {

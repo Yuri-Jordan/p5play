@@ -3,12 +3,8 @@ let enemies;
 let canvas;
 let lifeObject;
 let cameracontrol;
-let num_enemies = 3;
 const ESPACE_KEY_CODE = 32;
-
-let life = 5;
-let pontos = 0;
-let level = 1;
+let levelChanged = true;
 
 let gameSounds;
 var gameScreens = {
@@ -16,36 +12,49 @@ var gameScreens = {
   GAME: 1,
   GAMEOVER: 2,
   GAMEWIN: 3,
+  GAMESECONDLEVEL: 4
 };
 
-let currentScreenID;
+var gameLevels = {
+  FIRST: 1,
+  SECOND: 2,
+  FINAL: 3
+};
+
+let life = 3;
+let pontos = 0;
+let level = gameLevels.FIRST;
+
+let currentScreenID = gameScreens.MAIN;
 let mainScreen;
 let gameOverScreen;
 let gameWinScreen;
+let gameSecondLevelScreen;
 
 let backImage;
 
-function setup() {
+function setup(level = gameLevels.FIRST) {
 
   canvas = new Canvas(640, 480);
   backImage = loadImage('assets/images/background/backgroundSpace.png');
-  currentScreenID = gameScreens.MAIN;
 
   mainScreen = new ScreenMain(canvas, gameScreens);
   gameOverScreen = new ScreenGameOver(canvas, gameScreens);
   gameWinScreen = new WinScreen(canvas, gameScreens);
+  gameSecondLevelScreen = new ScreenSecondLevel(canvas);
 
   gameSounds = new Sound();
 
   hero = new Player(320, 435, canvas, gameSounds.getHeroSounds());
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
-  enemies = new Enemy(canvas, num_enemies, gameSounds.getEnemySounds());
+  enemies = new Enemy(canvas, gameSounds.getEnemySounds(), level);
   lifeObject = new Life(canvas);
 }
 
-function mousePressed() {
-  if (!gameSounds.backSound.isPlaying()) {
+function keyPressed() {
+  if (!gameSounds.backSound.isPlaying() &&
+    (currentScreenID == gameScreens.MAIN || currentScreenID == gameScreens.GAME)) {
     gameSounds.backSound.loop();
   }
 }
@@ -69,15 +78,25 @@ function draw() {
     mainScreen.draw();
     currentScreenID = mainScreen.getScreenID();
     return;
+  } else if (currentScreenID == gameScreens.GAME) {
+    background(backImage);
   } else if (currentScreenID == gameScreens.GAMEOVER) {
     gameOverScreen.draw();
     return;
   } else if (currentScreenID == gameScreens.GAMEWIN) {
     gameWinScreen.draw();
     return;
+  } else if (currentScreenID == gameScreens.GAMESECONDLEVEL) {
+    gameSecondLevelScreen.draw();
+    if (levelChanged) {
+      level = 2;
+      levelChanged = false;
+      hero.remove();
+      this.setup(gameLevels.SECOND);
+      return;
+    }
   }
 
-  background(backImage);
 
   enemies.update();
   lifeObject.update();
@@ -94,8 +113,11 @@ function hit(enemy, bullet) {
   enemy.remove();
   gameSounds.spaceExplosion.play();
   pontos += 1;
-  
-  if (enemies.enemiesGroup.length == 0) currentScreenID = gameScreens.GAMEWIN;
+
+  if (enemies.enemiesGroup.length == 0) {
+    gameSounds.backSound.stop();
+    currentScreenID = gameScreens.GAMESECONDLEVEL;
+  }
 }
 
 function damage(bullet) {
@@ -104,11 +126,11 @@ function damage(bullet) {
   bullet.remove();
   life -= 1;
   pontos -= 1;
-  if (life == 0){
+  if (life == 0) {
     gameSounds.backSound.stop();
     gameSounds.getGameOverSound().play();
     currentScreenID = gameScreens.GAMEOVER;
-  } 
+  }
 }
 
 function health(lifeCatch) {
