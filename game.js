@@ -7,7 +7,6 @@ const ESPACE_KEY_CODE = 32;
 let levelChanged = true;
 let lifeBoss = 10;
 
-let gameSounds;
 var gameScreens = {
   MAIN: 0,
   GAME: 1,
@@ -36,6 +35,24 @@ let gameFinalLevelScreen;
 
 let backImage;
 
+this.backSound;
+this.heroShootSound;
+this.enemyShootSound;
+this.spaceExplosion;
+this.powerUpLife;
+this.hitSound ;
+this.gameOverSound ;
+
+function preload() {
+  this.backSound = loadSound('assets/sounds/alienblues.mp3');
+  this.heroShootSound = loadSound('assets/sounds/laserfire01.ogg');
+  this.enemyShootSound = loadSound('assets/sounds/laserfire02.ogg');
+  this.spaceExplosion = loadSound('assets/sounds/space-explosion.flac');
+  this.powerUpLife = loadSound('assets/sounds/powerup-life.wav');
+  this.hitSound = loadSound('assets/sounds/hit_sound.wav');
+  this.gameOverSound = loadSound('assets/sounds/gameover.ogg');
+}
+
 function setup(level = gameLevels.FIRST) {
 
   canvas = new Canvas(640, 480);
@@ -47,19 +64,18 @@ function setup(level = gameLevels.FIRST) {
   gameSecondLevelScreen = new ScreenSecondLevel(canvas);
   gameFinalLevelScreen = new ScreenFinalLevel(canvas);
 
-  gameSounds = new Sound();
 
-  hero = new Player(320, 435, canvas, gameSounds.getHeroSounds());
+  hero = new Player(320, 435, canvas, { shoot: this.heroShootSound });
   // cameracontrol = new Cameracontrol(hero);
   // cameracontrol.createCamera();
-  enemies = new Enemy(canvas, gameSounds.getEnemySounds(), level);
+  enemies = new Enemy(canvas, { shoot: this.enemyShootSound }, level);
   lifeObject = new Life(canvas);
 }
 
 function keyPressed() {
-  if (!gameSounds.backSound.isPlaying() &&
+  if (!backSound.isPlaying() &&
     (currentScreenID == gameScreens.MAIN || currentScreenID == gameScreens.GAME)) {
-    gameSounds.backSound.loop();
+    backSound.loop();
   }
 }
 
@@ -129,11 +145,11 @@ function hit(enemy, bullet) {
   } else {
     lifeBoss -= 1;
     if (lifeBoss == 0) {
-      gameSounds.backSound.stop();
+      backSound.stop();
       enemy.remove();
     }
   }
-  gameSounds.spaceExplosion.play();
+  spaceExplosion.play();
   pontos += 1;
 
   if (enemies.enemiesGroup.length == 0) {
@@ -150,20 +166,22 @@ function hit(enemy, bullet) {
 }
 
 function damage(bullet) {
-  gameSounds.getHitSound().play();
+  hitSound.setVolume(0.5);
+  hitSound.play();
   hero.heroDamagedAnimation();
   bullet.remove();
   life -= 1;
   pontos -= 1;
   if (life == 0) {
-    gameSounds.backSound.stop();
-    gameSounds.getGameOverSound().play();
+    backSound.stop();
+    gameOverSound.play();
     currentScreenID = gameScreens.GAMEOVER;
   }
 }
 
 function health(lifeCatch) {
-  gameSounds.getPowerUpSounds().life.play();
+  powerUpLife.setVolume(0.2);
+  powerUpLife.play();
   lifeCatch.remove();
   life += 1;
 }
