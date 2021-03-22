@@ -3,7 +3,7 @@ let enemies;
 let canvas;
 let lifeObject;
 let cameracontrol;
-const ESPACE_KEY_CODE = 3;
+const ESPACE_KEY_CODE = 32;
 let levelChanged = true;
 let lifeBoss = 10;
 let controlsTypeSelected;
@@ -29,7 +29,7 @@ var gameLevels = {
   FINAL: 3
 };
 
-let life = 30;
+let life = 3;
 let pontos = 0;
 let level = gameLevels.FIRST;
 
