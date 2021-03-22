@@ -6,6 +6,13 @@ let cameracontrol;
 const ESPACE_KEY_CODE = 32;
 let levelChanged = true;
 let lifeBoss = 10;
+let controlsTypeSelected;
+let firstTimeInGame = true;
+
+var controlsType = {
+  KEYBOARD: 0,
+  GESTURES: 1
+};
 
 var gameScreens = {
   MAIN: 0,
@@ -22,7 +29,7 @@ var gameLevels = {
   FINAL: 3
 };
 
-let life = 3;
+let life = 30;
 let pontos = 0;
 let level = gameLevels.FIRST;
 
@@ -40,8 +47,8 @@ this.heroShootSound;
 this.enemyShootSound;
 this.spaceExplosion;
 this.powerUpLife;
-this.hitSound ;
-this.gameOverSound ;
+this.hitSound;
+this.gameOverSound;
 
 function preload() {
   this.backSound = loadSound('assets/sounds/alienblues.mp3');
@@ -58,7 +65,7 @@ function setup(level = gameLevels.FIRST) {
   canvas = new Canvas(640, 480);
   backImage = loadImage('assets/images/background/backgroundSpace.png');
 
-  mainScreen = new ScreenMain(canvas, gameScreens);
+  mainScreen = new ScreenMain(canvas, gameScreens, controlsType);
   gameOverScreen = new ScreenGameOver(canvas, gameScreens);
   gameWinScreen = new WinScreen(canvas, gameScreens);
   gameSecondLevelScreen = new ScreenSecondLevel(canvas);
@@ -66,8 +73,6 @@ function setup(level = gameLevels.FIRST) {
 
 
   hero = new Player(320, 435, canvas, { shoot: this.heroShootSound });
-  // cameracontrol = new Cameracontrol(hero);
-  // cameracontrol.createCamera();
   enemies = new Enemy(canvas, { shoot: this.enemyShootSound }, level);
   lifeObject = new Life(canvas);
 }
@@ -91,46 +96,73 @@ function controls() {
   drawSprites();
 }
 
+function changeLevel(gameLevel) {
+  level = gameLevel;
+  levelChanged = false;
+  hero.remove();
+  this.setup(gameLevel);
+  if (controlsTypeSelected == controlsType.GESTURES) cameracontrol.setHero(hero);
+}
+
 
 function draw() {
 
   if (currentScreenID == gameScreens.MAIN) {
+
     mainScreen.draw();
     currentScreenID = mainScreen.getScreenID();
+    controlsTypeSelected = mainScreen.getControlsType();
     return;
+    
   } else if (currentScreenID == gameScreens.GAME) {
+
     background(backImage);
+
   } else if (currentScreenID == gameScreens.GAMEOVER) {
+
     gameOverScreen.draw();
     return;
+
   } else if (currentScreenID == gameScreens.GAMEWIN) {
+
     gameWinScreen.draw(pontos);
     return;
+
   } else if (currentScreenID == gameScreens.GAMESECONDLEVEL) {
+
     gameSecondLevelScreen.draw();
     if (levelChanged) {
-      level = 2;
-      levelChanged = false;
-      hero.remove();
-      this.setup(gameLevels.SECOND);
+      changeLevel(gameLevels.SECOND);
       return;
     }
+
   } else if (currentScreenID == gameScreens.GAMEFINALLEVEL) {
+
     gameFinalLevelScreen.draw();
     if (levelChanged) {
-      level = 3;
-      levelChanged = false;
-      hero.remove();
-      this.setup(gameLevels.FINAL);
+      changeLevel(gameLevels.FINAL);
       return;
     }
   }
 
+  if (controlsTypeSelected == controlsType.GESTURES) {
 
+    if (firstTimeInGame) {
+      cameracontrol = new Cameracontrol(hero);
+      cameracontrol.createCamera();
+      firstTimeInGame = false;
+    }
+
+    if(!cameracontrol.camIsReady()) return;
+
+    cameracontrol.update();
+
+  } else {
+    controls();
+  }  
+  
   enemies.update();
   lifeObject.update();
-  controls();
-  // cameracontrol.update();
   updateGUI();
   enemies.enemiesGroup.overlap(hero.bullets, hit);
   enemies.bulletsGroup.overlap(hero.hero, damage);

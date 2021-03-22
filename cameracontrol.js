@@ -7,6 +7,7 @@ class Cameracontrol {
     this.label = '';
     this.hero = hero;
     this.classificationPromisse;
+    this.camReady = false;
 
     this.loadML5Model();
   }
@@ -66,5 +67,14 @@ class Cameracontrol {
     // The results are in an array ordered by confidence.
     this.label = (results) ? results[0].label : '';
     this.controlsSpace();
+    this.camReady = true;
+  }
+
+  camIsReady() {
+    return this.camReady;
+  }
+
+  setHero(hero) {
+    return this.hero = hero;
   }
 }
