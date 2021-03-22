@@ -40,7 +40,7 @@ class Player {
     this.hero.maxSpeed = 6;
     this.hero.friction = 0.98;
     this.hero.scale = 0.2;
-    this.hero.setCollider('circle', 0, 0, 20);
+    this.hero.setCollider("rectangle", 0, 0, 160, 320);
 
     this.hero.addImage(this.heroImage);
   }
@@ -57,19 +57,19 @@ class Player {
 
   heroDamagedAnimation() {
     setTimeout(() => {
-    
+
       this.hero.position.y += 15;
     }, 1);
     setTimeout(() => {
-      
+
       this.hero.position.y -= 15;
     }, 100);
     setTimeout(() => {
-      
+
       this.hero.position.y -= 15;
     }, 100);
     setTimeout(() => {
-      
+
       this.hero.position.y += 15;
     }, 100);
   }

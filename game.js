@@ -12,7 +12,8 @@ var gameScreens = {
   GAME: 1,
   GAMEOVER: 2,
   GAMEWIN: 3,
-  GAMESECONDLEVEL: 4
+  GAMESECONDLEVEL: 4,
+  GAMEFINALLEVEL: 5
 };
 
 var gameLevels = {
@@ -30,6 +31,7 @@ let mainScreen;
 let gameOverScreen;
 let gameWinScreen;
 let gameSecondLevelScreen;
+let gameFinalLevelScreen;
 
 let backImage;
 
@@ -42,6 +44,7 @@ function setup(level = gameLevels.FIRST) {
   gameOverScreen = new ScreenGameOver(canvas, gameScreens);
   gameWinScreen = new WinScreen(canvas, gameScreens);
   gameSecondLevelScreen = new ScreenSecondLevel(canvas);
+  gameFinalLevelScreen = new ScreenFinalLevel(canvas);
 
   gameSounds = new Sound();
 
@@ -95,6 +98,15 @@ function draw() {
       this.setup(gameLevels.SECOND);
       return;
     }
+  } else if (currentScreenID == gameScreens.GAMEFINALLEVEL) {
+    gameFinalLevelScreen.draw();
+    if (levelChanged) {
+      level = 3;
+      levelChanged = false;
+      hero.remove();
+      this.setup(gameLevels.FINAL);
+      return;
+    }
   }
 
 
@@ -116,7 +128,14 @@ function hit(enemy, bullet) {
 
   if (enemies.enemiesGroup.length == 0) {
     gameSounds.backSound.stop();
-    currentScreenID = gameScreens.GAMESECONDLEVEL;
+
+    if (currentScreenID == gameScreens.GAME) {
+      currentScreenID = gameScreens.GAMESECONDLEVEL;
+    } else if (currentScreenID == gameScreens.GAMESECONDLEVEL) {
+      levelChanged = true;
+      currentScreenID = gameScreens.GAMEFINALLEVEL;
+    }
+
   }
 }
 

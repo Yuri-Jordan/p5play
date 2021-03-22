@@ -3,21 +3,23 @@ class Enemy {
     this.enemyX = [];
     this.enemyY = [];
     this.canvas = canvas;
-    this.num_enemies = 3 * int(level); 
+    this.level = int(level);
+    this.num_enemies = (this.level == 3) ? 1 : 3 * this.level; 
     this.enemiesGroup;
     this.bulletsGroup;
     this.enemySounds = enemySounds;
     this.firstCall = true;
-    this.level = level;
 
     this.enemyImages = {
       '1': 'assets/images/enemies/enemyshipred.png',
       '2': 'assets/images/enemies/enemyshipblue.png',
+      '3': 'assets/images/enemies/enemyshipgreen.png',
     };
 
     this.bulletImages = {
       '1': 'assets/images/ChargeShotRedOrange.png',
       '2': 'assets/images/ChargeShotBlue.png',
+      '3': 'assets/images/ChargeShotGreen.png',
     };
 
     this.createEnemies();
@@ -44,7 +46,7 @@ class Enemy {
       enemy.rotation = 180;
       enemy.addImage(this.enemyImage);
       enemy.velocity.x = 5;
-
+      enemy.setCollider("circle", 0, 0, 75);
       this.enemiesGroup.add(enemy);
     }
   }

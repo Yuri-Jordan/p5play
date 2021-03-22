@@ -14,6 +14,7 @@ class Life {
         life.scale = 0.1;
         life.addImage(this.lifeImage);
         life.velocity.y = 2.5;
+        life.setCollider("rectangle", 0, 0, 370, 320);
 
         this.lifesGroup.add(life);
     }
