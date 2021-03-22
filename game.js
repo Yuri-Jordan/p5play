@@ -3,7 +3,7 @@ let enemies;
 let canvas;
 let lifeObject;
 let cameracontrol;
-const ESPACE_KEY_CODE = 32;
+const ESPACE_KEY_CODE = 3;
 let levelChanged = true;
 let lifeBoss = 10;
 let controlsTypeSelected;
