@@ -12,7 +12,7 @@ class WinScreen {
         textSize(this.fontsize);
         textAlign(CENTER);
         fill(255, 255, 255);
-        text('NOME JOGO', this.canvas.x / 2, this.canvas.y / 4);
+        text('FalangeSpace', this.canvas.x / 2, this.canvas.y / 4);
         this.fontsize = 30;
         text('Você venceu! Sua ponuação foi ' + int(score), this.canvas.x / 2, this.canvas.y / 1.5);
     }

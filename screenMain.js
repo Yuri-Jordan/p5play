@@ -20,7 +20,7 @@ class ScreenMain {
         textSize(this.fontsize);
         textAlign(CENTER);
         fill(255, 255, 255);
-        text('NOME JOGO', this.canvas.x / 2, this.canvas.y / 4);
+        text('FalangeSpace', this.canvas.x / 2, this.canvas.y / 4);
         textSize(22);
         text('Jogar com teclado', this.canvas.x / 4, this.canvas.y / 1.5);
         text('Jogar com gestos', this.canvas.x - 175, this.canvas.y / 1.5);
