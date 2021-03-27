@@ -164,12 +164,12 @@ function draw() {
   enemies.update();
   lifeObject.update();
   updateGUI();
-  enemies.enemiesGroup.overlap(hero.bullets, hit);
+  hero.bullets.overlap(enemies.enemiesGroup, hit);
   enemies.bulletsGroup.overlap(hero.hero, damage);
   lifeObject.lifesGroup.overlap(hero.hero, health);
 }
 
-function hit(enemy, bullet) {
+function hit(bullet, enemy) {
   bullet.remove();
 
   if (level != gameLevels.FINAL) {
